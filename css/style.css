@@ -1,0 +1,18 @@
+* {padding: 0; margin: 0; }
+body {background-color:#ffcccc; padding-top: 30px; }
+.break-line {clear: both; }
+#wrap {width: 100%; background: white; margin: 0 auto; }
+#wrap #top {width: 100%; height: 40px; float: left; }
+#wrap #top #input-link .left input {float: left; width: 80%; }
+#wrap #top #input-link .right input {float: right; width: 20%; }
+
+#wrap #mid .link-row {height: 30px; border-bottom: 1px dashed black; }
+#wrap #mid .link-row .left {width: 80%; float: left; }
+#wrap #mid .link-row .left a {text-decoration: none; }
+#wrap #mid .link-row .right {width: 20%; float: right; } 
+
+#wrap #bot #navi {height: 40px; }
+#wrap #bot #navi .left {width: 80%; float: left; }
+#wrap #bot #navi .left button {width: 50%; float: left; }
+#wrap #bot #navi .right {width: 20%; float: right; }
+#wrap #bot #navi .right button {width: 100%; float: right; }
