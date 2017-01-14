@@ -47,8 +47,12 @@ if ($link != "") {
     $status = writelist($record);
     if ($status) {
         $response['code'] = 1;
+        $response['link'] = $link;
+        $response['day'] = $day;
+        echo json_encode($response);
     }
 }
+
 
 //Xu ly doc tu file
 $data = readlist();
