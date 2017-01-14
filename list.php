@@ -13,43 +13,14 @@ require 'process.php';
     <div id="wrap">
         <div id="top">
             <div id="input-link">
-                <div class="left"><input id="link" type="text" /></div>
+                <div class="left"><input id="link" type="text" placeholder="Hyperlink or Text" autofocus/></div>
                 <div class="right"><input id="submit-but" type="submit" value="OK" /> </div>
             </div>
         </div>
         <!--End id top--></!--End>
         <div class="break-line"></div>
         <div id="mid">
-            <?php
-            foreach ($data as $row) {
-                echo "<div class='link-row'>";
-                echo "<div class='left'>";
-
-                if (strpos($row, "http") !== FALSE) {
-                    // hyperlink
-                    $arr = explode(" ", $row);
-                    echo '<a href="' . $arr[0] . '" target="_blank">' . $arr[0] . '</a>';
-                    echo "</div>";
-                    echo "<div class='right'>";
-                    echo "<p>" . $arr[1] . "</p>";
-                    echo "</div>";
-                } else {
-                    // string text
-
-                    $arr = array();
-                    $t = strrpos($row, " ");
-                    $arr[] = substr($row, 0, $t);
-                    $arr[] = substr($row, $t);
-                    echo '<a href="http://google.com/?q=' . $arr[0] . '" target="_blank">' . $arr[0] . '</a>';
-                    echo "</div>";
-                    echo "<div class='right'>";
-                    echo "<p>" . $arr[1] . "</p>";
-                    echo "</div>";
-                }
-                echo "</div>";
-                echo "<div class='break-line'></div>";
-            }
-            ?>
+            <?php printdata($data);?>
         </div>
         <!--End id mid--></!--End>
         <div id="bot">
@@ -68,36 +39,45 @@ require 'process.php';
     <!--End id wrap--></!--End>
     <script>
         $(document).ready(function () {
-            $('.link-row:first').css("border-top", "1px dashed black");
-            $('.link-row:last').remove();
+            $('.link-row:last').css("border-bottom", "none");
         });
         $('#submit-but').click(function (e) {
             e.preventDefault(); //loai bo cac hanh dong mac dinh
 
-            var link = $('#link').val();
+            var text = $('#link').val();
             $.ajax({
                 type: 'POST', // method
                 url: './process.php', // action
                 dataType: 'JSON', // kieu du lieu nhan ve
                 data: {// data gui cung request
-                    link: link,
+                    text: text
                 },
                 success: function (data) {// thanh cong status http = 200
                     // in ket qua sang tab console
-
+//                    console.log(data);
                     // xu ly du lieu tra ve
                     if (data.code === 1) {
-                        //console.log(data);
-                        $('#mid').append(
-                                '<div class="link-row" style="display: none;"><div class="left"><a href="' + data.link + '" target="_blank">' + data.link + '</a></div>' +
+                        console.log(data);
+                        var link;
+                        if (data.type) {
+                            link = '<a href="';
+                        }
+                        else {
+                            link = '<a href="http://google.com/?q=';
+                        }
+                        $('#mid').prepend(
+                                '<div class="link-row" style="display: none;"><div class="left">'+ link + data.text + '" target="_blank">' + data.text + '</a></div>' +
                                 '<div class="right"><p>' + data.day + '</p></div></div>' +
                                 '<div class="break-line"></div>'
                                 );
-                        $('.link-row:last').slideDown();
+                        $('.link-row:first').slideDown();
+                        $('.link-row:last').css("border-bottom", "none");
                         $('#link').val('');
 
-                    } else {
-
+                    }
+                    else {
+                        console.log(data.error);
+                        $('#link').val('');
                     }
 
                 }
